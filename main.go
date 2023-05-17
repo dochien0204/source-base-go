@@ -15,6 +15,10 @@ import (
 	"github.com/gin-contrib/cors"
 	ginI18n "github.com/gin-contrib/i18n"
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/swag/example/basic/docs"
+
 	"golang.org/x/text/language"
 )
 
@@ -85,6 +89,11 @@ func main() {
 
 	//Handler
 	userHandler.MakeHandlers(app, userService, verifier, tx)
+
+	//Swagger
+	docs.SwaggerInfo.BasePath = ""
+	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+
 	app.Run(fmt.Sprintf("%s%s%v", envConfig.Host, ":", envConfig.Port))
 
 }

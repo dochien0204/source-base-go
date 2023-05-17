@@ -14,6 +14,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Get user's profile
+// @Schemes
+// @Description Get user's profile
+// @Tags user
+// @Success 200 {object} userPresenter.UserProfileResponse
+// @Router /user/profile [get]
 func getUserProfile(ctx *gin.Context, userService user.UseCase) {
 	//URL param
 	userId := ctx.Query("userId")
