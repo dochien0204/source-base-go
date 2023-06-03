@@ -4,6 +4,13 @@ import "github.com/golang-jwt/jwt/v4"
 
 type TokenClaims struct {
 	jwt.StandardClaims
+	UserId   int      `json:"userId"`
+	ListRole []string `json:"roles"`
+	Jti      string   `json:"jti"`
+}
+
+type RefreshToken struct {
+	jwt.StandardClaims
 	UserId int    `json:"userId"`
 	Jti    string `json:"jti"`
 }

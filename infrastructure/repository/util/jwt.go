@@ -4,9 +4,11 @@ import (
 	"errors"
 	"source-base-go/config"
 	"source-base-go/entity"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/uuid"
 )
 
 func keyFunc(key string) jwt.Keyfunc {
@@ -46,4 +48,61 @@ func ParseAccessToken(token string) (*entity.TokenClaims, error) {
 	}
 
 	return &claims, nil
+}
+
+func GenerateAccessToken(user *entity.User) (string, error) {
+	//Get random
+	random, err := uuid.NewRandom()
+	if err != nil {
+		return "", err
+	}
+
+	//Get list role string of user
+	listRole := []string{}
+	for _, role := range user.ListRole {
+		listRole = append(listRole, role.Code)
+	}
+
+	//Create claims
+	claims := entity.TokenClaims{
+		UserId:   user.Id,
+		ListRole: listRole,
+		Jti:      random.String(),
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Duration(config.GetInt("jwt.accesMaxAge"))).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+	}
+
+	//create token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	//Sign with secret key
+	signedToken, err := token.SignedString([]byte(config.GetString(config.GetString("jwt.secretKey"))))
+	if err != nil {
+		return "", err
+	}
+
+	return signedToken, nil
+}
+
+//Generate Refresh Token
+func GenerateRefreshToken(user *entity.User) (string, error) {
+	//Create claims
+	claims := entity.RefreshToken{
+		UserId: user.Id,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Duration(config.GetInt("jwt.refreshMaxAge"))).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+	}
+
+	//Create token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	//Sign with secret key
+	signedToken, err := token.SignedString([]byte(config.GetString("jwt.secretKey")))
+	if err != nil {
+		return "", nil
+	}
+
+	return signedToken, nil
 }

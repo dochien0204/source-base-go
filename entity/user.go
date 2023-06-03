@@ -12,6 +12,7 @@ type User struct {
 	Password string
 	StatusId int
 	Status   *Status
+	ListRole []*Role
 
 	CreatedAt time.Time
 	UpdatedAt time.Time

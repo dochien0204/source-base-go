@@ -11,7 +11,8 @@ import (
 )
 
 type UserData struct {
-	Status string
+	Status   string
+	ListRole []string
 }
 
 type Verifier interface {
@@ -70,8 +71,15 @@ func (v *JWTVerifier) CacheUserData(user *entity.User, expiredAt int) error {
 		return entity.ErrInternalServerError
 	}
 
+	//Cach role
+	listRole := []string{}
+	for _, role := range user.ListRole {
+		listRole = append(listRole, role.Code)
+	}
+
 	userData := UserData{
-		Status: user.Status.Code,
+		Status:   user.Status.Code,
+		ListRole: listRole,
 	}
 
 	userDataJSON, err := json.Marshal(&userData)
