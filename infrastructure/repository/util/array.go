@@ -1,8 +1,8 @@
 package util
 
-func InArray(str string, array []string) bool {
-	for _, element := range array {
-		if str == element {
+func InArray[T comparable](element T, array []T) bool {
+	for _, value := range array {
+		if element == value {
 			return true
 		}
 	}
