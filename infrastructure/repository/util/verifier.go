@@ -18,7 +18,7 @@ type UserData struct {
 type Verifier interface {
 	VerifyToken(token string) (bool, *UserData, error)
 	InvalidateToken(token string) error
-	CacheUserData(user *entity.User, expiredAt int) error
+	CacheUserData(user *entity.User, listRole []string, expiredAt int) error
 	GetUserData(userId int) (*UserData, error)
 }
 
@@ -66,15 +66,9 @@ func (v *JWTVerifier) InvalidateToken(token string) error {
 	return nil
 }
 
-func (v *JWTVerifier) CacheUserData(user *entity.User, expiredAt int) error {
+func (v *JWTVerifier) CacheUserData(user *entity.User, listRole []string, expiredAt int) error {
 	if user.Status == nil {
 		return entity.ErrInternalServerError
-	}
-
-	//Cach role
-	listRole := []string{}
-	for _, role := range user.ListRole {
-		listRole = append(listRole, role.Code)
 	}
 
 	userData := UserData{

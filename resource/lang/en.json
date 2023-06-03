@@ -26,5 +26,13 @@
     "forbidden": {
         "one": "Forbidden",
         "other": "Forbidden"
+    },
+    "usernameNotExists": {
+        "one": "Username not exists",
+        "other": "Username not exists"
+    },
+    "invalidPassword": {
+        "one": "Invalid Password",
+        "other": "Invalid Password"
     }
 }

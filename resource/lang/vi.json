@@ -26,5 +26,13 @@
     "forbidden": {
         "one": "Không có quyền truy cập tài nguyên này",
         "other": "Không có quyền truy cập tài nguyên này"
+    },
+    "usernameNotExists": {
+        "one": "Username không tồn tại",
+        "other": "Username không tồn tại"
+    },
+    "invalidPassword": {
+        "one": "Mật khẩu không chính xác",
+        "other": "Mât khẩu không chính xác"
     }
 }

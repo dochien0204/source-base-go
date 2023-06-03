@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func JWTVerifyMiddleware(verifier util.JWTVerifier) gin.HandlerFunc {
+func JWTVerifyMiddleware(verifier util.Verifier) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token, err := util.GetToken(ctx)
 		if err != nil {

@@ -5,11 +5,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+	authHandler "source-base-go/api/handler/auth"
+	roleHandler "source-base-go/api/handler/role"
 	userHandler "source-base-go/api/handler/user"
 	"source-base-go/api/middleware"
 	"source-base-go/config"
 	"source-base-go/infrastructure/repository"
 	jwtUtil "source-base-go/infrastructure/repository/util"
+	"source-base-go/usecase/role"
 	"source-base-go/usecase/user"
 
 	"github.com/gin-contrib/cors"
@@ -61,9 +64,11 @@ func main() {
 
 	//Define Repository
 	userRepo := repository.NewUserRepostory(db)
+	roleRepo := repository.NewRoleRepository(db)
 
 	//Define service
-	userService := user.NewService(userRepo)
+	userService := user.NewService(userRepo, roleRepo, verifier)
+	roleServce := role.NewService(roleRepo)
 
 	//gin I18n
 	app.Use(ginI18n.Localize(
@@ -89,6 +94,8 @@ func main() {
 
 	//Handler
 	userHandler.MakeHandlers(app, userService, verifier, tx)
+	roleHandler.MakeHandlers(app, roleServce, verifier, tx)
+	authHandler.MakeHandlers(app, userService)
 
 	//Swagger
 	docs.SwaggerInfo.BasePath = ""

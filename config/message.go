@@ -9,4 +9,6 @@ const (
 	BAD_REQUEST           = "badRequest"
 	UNAUTHORIZED          = "unauthorized"
 	FORBIDDEN             = "forbidden"
+	USERNAME_NOT_EXISTS   = "usernameNotExists"
+	INVALID_PASSWORD      = "invalidPassword"
 )

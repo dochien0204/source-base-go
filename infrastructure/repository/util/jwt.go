@@ -57,17 +57,10 @@ func GenerateAccessToken(user *entity.User) (string, error) {
 		return "", err
 	}
 
-	//Get list role string of user
-	listRole := []string{}
-	for _, role := range user.ListRole {
-		listRole = append(listRole, role.Code)
-	}
-
 	//Create claims
 	claims := entity.TokenClaims{
-		UserId:   user.Id,
-		ListRole: listRole,
-		Jti:      random.String(),
+		UserId: user.Id,
+		Jti:    random.String(),
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Duration(config.GetInt("jwt.accesMaxAge"))).Unix(),
 			IssuedAt:  time.Now().Unix(),

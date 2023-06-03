@@ -15,7 +15,7 @@ func PermissionMiddleware(permisstion define.Permisstion) gin.HandlerFunc {
 		//Get user data from gin Context
 		value, exists := ctx.Get("userData")
 		if !exists {
-			util.HandlerException(ctx, http.StatusForbidden, entity.ErrForbidden)
+			util.HandlerException(ctx, http.StatusUnauthorized, entity.ErrUnauthorized)
 			return
 		}
 
