@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"source-base-go/entity"
+	"source-base-go/infrastructure/repository/define"
 
 	"gorm.io/gorm"
 )
@@ -46,6 +47,7 @@ func (r UserRepository) FindByUsername(userName string) (*entity.User, error) {
 	user := &entity.User{}
 	err := r.db.
 		Where("username = ?", userName).
+		Preload("Status").
 		First(&user).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -55,4 +57,44 @@ func (r UserRepository) FindByUsername(userName string) (*entity.User, error) {
 	}
 
 	return user, nil
+}
+
+func (r UserRepository) CreateUser(user *entity.User) error {
+	//Hash password
+	err := user.HashPassword()
+	if err != nil {
+		return err
+	}
+
+	//Add status active for user
+	statusActive := &entity.Status{}
+	err = r.db.Model(&entity.Status{}).
+		Where("code = ?", define.ACTIVE).
+		First(&statusActive).Error
+	if err != nil {
+		return err
+	}
+	user.StatusId = statusActive.Id
+
+	//Create user
+	err = r.db.Create(&user).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r UserRepository) IsUserExists(username string) (bool, error) {
+	var user entity.User
+	err := r.db.Where("username = ?", username).First(&user).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return false, nil
+		} else {
+			return false, err
+		}
+	}
+
+	return true, nil
 }

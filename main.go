@@ -65,9 +65,10 @@ func main() {
 	//Define Repository
 	userRepo := repository.NewUserRepostory(db)
 	roleRepo := repository.NewRoleRepository(db)
+	userRoleRepo := repository.NewUserRoleRepository(db)
 
 	//Define service
-	userService := user.NewService(userRepo, roleRepo, verifier)
+	userService := user.NewService(userRepo, roleRepo, userRoleRepo, verifier)
 	roleServce := role.NewService(roleRepo)
 
 	//gin I18n
@@ -95,7 +96,7 @@ func main() {
 	//Handler
 	userHandler.MakeHandlers(app, userService, verifier, tx)
 	roleHandler.MakeHandlers(app, roleServce, verifier, tx)
-	authHandler.MakeHandlers(app, userService)
+	authHandler.MakeHandlers(app, userService, tx)
 
 	//Swagger
 	docs.SwaggerInfo.BasePath = ""

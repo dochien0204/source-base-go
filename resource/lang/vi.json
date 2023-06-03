@@ -34,5 +34,9 @@
     "invalidPassword": {
         "one": "Mật khẩu không chính xác",
         "other": "Mât khẩu không chính xác"
+    },
+    "accountAlreadyExists": {
+        "one": "Tài khoản đã tồn tại",
+        "other": "Tài khoản đã tồn tại"
     }
 }

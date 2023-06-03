@@ -36,7 +36,8 @@ func StatusInList(status int, statusList []int) bool {
 func (r *MiddlewareRepository) DBTransactionMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		txHandle := r.db.Begin()
-		log.Print("Beginning database transaction")
+		fmt.Println()
+		log.Print("\033[32m", "[transaction] Beginning transactions", "\033[0m")
 
 		defer func() {
 			if r := recover(); r != nil {
@@ -53,7 +54,7 @@ func (r *MiddlewareRepository) DBTransactionMiddleware() gin.HandlerFunc {
 				log.Print("trx commit error", err)
 			}
 		} else {
-			fmt.Print()
+			fmt.Println()
 			log.Println("\033[31m", "[transaction] rolling back transaction due to status code:", c.Writer.Status(), "\033[0m")
 			txHandle.Rollback()
 		}

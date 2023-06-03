@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"log"
 	"source-base-go/entity"
 
 	"gorm.io/gorm"
@@ -14,6 +15,16 @@ func NewRoleRepository(db *gorm.DB) *RoleRepository {
 	return &RoleRepository{
 		db: db,
 	}
+}
+
+func (r RoleRepository) WithTrx(trxHandle *gorm.DB) RoleRepository {
+	if trxHandle == nil {
+		log.Println("Transaction Database not found")
+		return r
+	}
+
+	r.db = trxHandle
+	return r
 }
 
 func (r RoleRepository) GetAllRole() ([]*entity.Role, error) {
