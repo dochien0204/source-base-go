@@ -62,7 +62,7 @@ func GenerateAccessToken(user *entity.User) (string, error) {
 		UserId: user.Id,
 		Jti:    random.String(),
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Duration(config.GetInt("jwt.accesMaxAge"))).Unix(),
+			ExpiresAt: time.Now().Add(time.Duration(config.GetInt("jwt.accessMaxAge"))).Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
 	}
@@ -70,7 +70,7 @@ func GenerateAccessToken(user *entity.User) (string, error) {
 	//create token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	//Sign with secret key
-	signedToken, err := token.SignedString([]byte(config.GetString(config.GetString("jwt.secretKey"))))
+	signedToken, err := token.SignedString([]byte(config.GetString("jwt.secretKey")))
 	if err != nil {
 		return "", err
 	}
@@ -78,7 +78,7 @@ func GenerateAccessToken(user *entity.User) (string, error) {
 	return signedToken, nil
 }
 
-//Generate Refresh Token
+// Generate Refresh Token
 func GenerateRefreshToken(user *entity.User) (string, error) {
 	//Create claims
 	claims := entity.RefreshToken{
