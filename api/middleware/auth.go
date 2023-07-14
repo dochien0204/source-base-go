@@ -13,18 +13,18 @@ func JWTVerifyMiddleware(verifier util.Verifier) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token, err := util.GetToken(ctx)
 		if err != nil {
-			util.HandlerException(ctx, http.StatusUnauthorized, entity.ErrUnauthorized)
+			util.HandleException(ctx, http.StatusUnauthorized, entity.ErrUnauthorized)
 			return
 		}
 
 		isVerified, userData, err := verifier.VerifyToken(token)
 		if err != nil {
-			util.HandlerException(ctx, http.StatusUnauthorized, entity.ErrUnauthorized)
+			util.HandleException(ctx, http.StatusUnauthorized, entity.ErrUnauthorized)
 			return
 		}
 
 		if userData.Status != define.ACTIVE {
-			util.HandlerException(ctx, http.StatusForbidden, entity.ErrForbidden)
+			util.HandleException(ctx, http.StatusForbidden, entity.ErrForbidden)
 			return
 		}
 
@@ -33,7 +33,7 @@ func JWTVerifyMiddleware(verifier util.Verifier) gin.HandlerFunc {
 			ctx.Next()
 			return
 		} else {
-			util.HandlerException(ctx, http.StatusUnauthorized, entity.ErrUnauthorized)
+			util.HandleException(ctx, http.StatusUnauthorized, entity.ErrUnauthorized)
 			return
 		}
 	}

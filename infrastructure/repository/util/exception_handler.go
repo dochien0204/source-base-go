@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func HandlerException(ctx *gin.Context, statusCode int, err error) {
+func HandleException(ctx *gin.Context, statusCode int, err error) {
 	errorMessage := &presenter.BasicResponse{
 		Status:  fmt.Sprint(statusCode),
 		Message: ParseError(err),
