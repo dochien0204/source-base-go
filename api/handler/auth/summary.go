@@ -20,7 +20,7 @@ func login(ctx *gin.Context, authService user.UseCase) {
 	var payload authPayload.Login
 	err := ctx.ShouldBindJSON(&payload)
 	if err != nil {
-		util.HandlerException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
+		util.HandleException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
 		return
 	}
 
@@ -29,13 +29,13 @@ func login(ctx *gin.Context, authService user.UseCase) {
 	if err != nil {
 		switch err {
 		case entity.ErrUsernameNotExists:
-			util.HandlerException(ctx, http.StatusBadRequest, err)
+			util.HandleException(ctx, http.StatusBadRequest, err)
 			return
 		case entity.ErrInvalidPassword:
-			util.HandlerException(ctx, http.StatusBadRequest, err)
+			util.HandleException(ctx, http.StatusBadRequest, err)
 			return
 		default:
-			util.HandlerException(ctx, http.StatusBadRequest, err)
+			util.HandleException(ctx, http.StatusBadRequest, err)
 			return
 		}
 	}
@@ -61,7 +61,7 @@ func register(ctx *gin.Context, authService user.UseCase) {
 	var payload authPayload.Register
 	err := ctx.ShouldBindJSON(&payload)
 	if err != nil {
-		util.HandlerException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
+		util.HandleException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
 		return
 	}
 
@@ -72,13 +72,13 @@ func register(ctx *gin.Context, authService user.UseCase) {
 	if err != nil {
 		switch err {
 		case entity.ErrBadRequest:
-			util.HandlerException(ctx, http.StatusBadRequest, err)
+			util.HandleException(ctx, http.StatusBadRequest, err)
 			return
 		case entity.ErrAccountAlreadyExists:
-			util.HandlerException(ctx, http.StatusBadRequest, err)
+			util.HandleException(ctx, http.StatusBadRequest, err)
 			return
 		default:
-			util.HandlerException(ctx, http.StatusInternalServerError, entity.ErrInternalServerError)
+			util.HandleException(ctx, http.StatusInternalServerError, entity.ErrInternalServerError)
 			return
 		}
 	}

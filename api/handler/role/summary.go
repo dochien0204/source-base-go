@@ -17,7 +17,7 @@ func findAllRole(ctx *gin.Context, roleService role.UseCase) {
 	//Get data
 	listRole, err := roleService.GetAllRole()
 	if err != nil {
-		util.HandlerException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
+		util.HandleException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
 		return
 	}
 
@@ -38,7 +38,7 @@ func findByCode(ctx *gin.Context, roleService role.UseCase) {
 	//Get data
 	role, err := roleService.FindByCode(code)
 	if err != nil {
-		util.HandlerException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
+		util.HandleException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
 		return
 	}
 

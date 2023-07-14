@@ -27,13 +27,13 @@ func getUserProfile(ctx *gin.Context, userService user.UseCase) {
 	//convert userId param to user id int
 	userIdConv, err := strconv.Atoi(userId)
 	if err != nil {
-		util.HandlerException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
+		util.HandleException(ctx, http.StatusBadRequest, entity.ErrBadRequest)
 		return
 	}
 
 	data, err := userService.GetUserProfile(userIdConv)
 	if err != nil {
-		util.HandlerException(ctx, http.StatusInternalServerError, entity.ErrInternalServerError)
+		util.HandleException(ctx, http.StatusInternalServerError, entity.ErrInternalServerError)
 		return
 	}
 
