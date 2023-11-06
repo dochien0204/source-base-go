@@ -16,7 +16,7 @@
     "database": {
         "postgres": {
             "timeout": 5000,
-            "host": "localhost",
+            "host": "source-base-database",
             "port": "5432",
             "dbname": "base-go",
             "user": "postgres",
@@ -24,7 +24,7 @@
         }
     },
     "redis": {
-        "host": "localhost",
+        "host": "source-base-redis",
         "port": "6379"
     }
 }
